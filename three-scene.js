@@ -1,181 +1,166 @@
-/* ─── THREE.JS SCENE: Abstract 3D rotating model ─── */
+/* ─── THREE.JS: Chrome Blue 3D Cursor ─────────────── */
 (function () {
   const canvas = document.getElementById('three-canvas');
 
-  // ── Renderer ──
-  const renderer = new THREE.WebGLRenderer({
-    canvas,
-    antialias: true,
-    alpha: true,
-  });
+  /* ── Renderer ── */
+  const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: false });
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
   renderer.setSize(window.innerWidth, window.innerHeight);
-  renderer.setClearColor(0x000000, 0);
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
-  renderer.toneMappingExposure = 1.4;
+  renderer.toneMappingExposure = 1.8;
+  renderer.outputEncoding = THREE.sRGBEncoding;
 
-  // ── Scene ──
+  /* ── Scene ── */
   const scene = new THREE.Scene();
+  scene.background = new THREE.Color(0x000000);
 
-  // ── Camera ──
-  const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 100);
-  camera.position.set(0, 0, 5.5);
+  /* ── Camera ── */
+  const camera = new THREE.PerspectiveCamera(42, window.innerWidth / window.innerHeight, 0.1, 100);
+  camera.position.set(0, 0, 10);
 
-  // ── Lights ──
-  // Ambient
-  scene.add(new THREE.AmbientLight(0xffffff, 0.4));
+  /* ══════════════════════════════════════════════════
+     CURSOR SHAPE — clockwise, tip at top, pointing up
+     Will be rotated -45° so it points upper-left
+  ═══════════════════════════════════════════════════ */
+  const shape = new THREE.Shape();
 
-  // Main directional
-  const dirLight = new THREE.DirectionalLight(0xffffff, 1.6);
-  dirLight.position.set(3, 5, 5);
-  scene.add(dirLight);
+  shape.moveTo(0, 4.0);      // TIP — top
+  shape.lineTo(3.5, -1.5);   // right corner of arrowhead
+  shape.lineTo(1.8, -0.5);   // notch right inner
+  shape.lineTo(1.8, -4.2);   // handle bottom-right
+  shape.lineTo(0.8, -4.2);   // handle bottom-left
+  shape.lineTo(0.8, -0.5);   // notch left inner
+  shape.lineTo(0.0, -1.5);   // bottom-left of arrowhead
+  shape.closePath();          // straight left edge back to tip
 
-  // Accent — warm terracotta fill
-  const fillLight = new THREE.PointLight(0xc84b31, 3.5, 18);
-  fillLight.position.set(-3, -2, 3);
-  scene.add(fillLight);
+  const extrudeSettings = {
+    depth: 1.4,
+    bevelEnabled: true,
+    bevelSegments: 20,
+    bevelSize: 0.28,
+    bevelThickness: 0.28,
+    bevelOffset: 0,
+  };
 
-  // Cool backlight
-  const backLight = new THREE.PointLight(0x8ab4f8, 2.0, 18);
-  backLight.position.set(2, 3, -4);
-  scene.add(backLight);
+  const geo = new THREE.ExtrudeGeometry(shape, extrudeSettings);
+  geo.center();
 
-  // Soft top
-  const topLight = new THREE.PointLight(0xffd6b0, 1.5, 12);
-  topLight.position.set(0, 5, 2);
-  scene.add(topLight);
-
-  // ── Environment (fake IBL using hemisphere) ──
-  const hemi = new THREE.HemisphereLight(0xfff0e0, 0xe0e8ff, 0.6);
-  scene.add(hemi);
-
-  // ── Main mesh: TorusKnot with physical chrome/iridescent material ──
-  const geo = new THREE.TorusKnotGeometry(1.0, 0.34, 256, 48, 3, 5);
-
+  /* ── Chrome blue iridescent material ── */
   const mat = new THREE.MeshPhysicalMaterial({
-    color: 0xffffff,
-    metalness: 0.92,
-    roughness: 0.08,
-    reflectivity: 1.0,
+    color: new THREE.Color(0.06, 0.12, 0.9),  // deep cobalt blue
+    metalness: 1.0,
+    roughness: 0.03,
     clearcoat: 1.0,
-    clearcoatRoughness: 0.05,
+    clearcoatRoughness: 0.0,
     iridescence: 1.0,
-    iridescenceIOR: 1.6,
-    iridescenceThicknessRange: [200, 800],
-    envMapIntensity: 2.0,
+    iridescenceIOR: 2.0,
+    iridescenceThicknessRange: [100, 700],
+    reflectivity: 1.0,
+    envMapIntensity: 1.2,
   });
 
   const mesh = new THREE.Mesh(geo, mat);
+
+  // Tilt like the reference — pointing upper-left, slight perspective tilt
+  mesh.rotation.z = -Math.PI * 0.22;  // 40° CCW so tip points upper-left
+  mesh.rotation.x = 0.12;             // slight tilt toward camera
+  mesh.scale.set(0.62, 0.62, 0.62);   // fit nicely in viewport
+
   scene.add(mesh);
 
-  // ── Secondary mesh: outer transparent shell ──
-  const shellGeo = new THREE.TorusKnotGeometry(1.18, 0.06, 200, 32, 3, 5);
-  const shellMat = new THREE.MeshPhysicalMaterial({
-    color: 0xffffff,
-    metalness: 0.5,
-    roughness: 0.0,
-    transparent: true,
-    opacity: 0.18,
-    wireframe: false,
-    side: THREE.DoubleSide,
-  });
-  const shell = new THREE.Mesh(shellGeo, shellMat);
-  scene.add(shell);
+  /* ════════════════════════════════════
+     LIGHTS — craft the chrome blue look
+  ════════════════════════════════════ */
 
-  // ── Tiny floating spheres (particles) ──
-  const particles = [];
-  const sphereGeo = new THREE.SphereGeometry(0.03, 12, 12);
+  // Very dim ambient — keeps dark mood
+  scene.add(new THREE.AmbientLight(0x060618, 2));
 
-  for (let i = 0; i < 28; i++) {
-    const sm = new THREE.MeshPhysicalMaterial({
-      color: i % 3 === 0 ? 0xc84b31 : i % 3 === 1 ? 0xffffff : 0x8ab4f8,
-      metalness: 0.8,
-      roughness: 0.1,
-      transparent: true,
-      opacity: 0.7 + Math.random() * 0.3,
-    });
-    const sphere = new THREE.Mesh(sphereGeo, sm);
+  // ① Main top-left blue key light — creates the big bright highlight
+  const keyLight = new THREE.PointLight(0x3355ff, 120, 25);
+  keyLight.position.set(-4, 6, 7);
+  scene.add(keyLight);
 
-    const angle  = (i / 28) * Math.PI * 2;
-    const radius = 1.5 + Math.random() * 0.8;
-    const height = (Math.random() - 0.5) * 2.4;
+  // ② White specular streak — thin bright line on edge
+  const specLight = new THREE.DirectionalLight(0xffffff, 6);
+  specLight.position.set(0.5, 3, 6);
+  scene.add(specLight);
 
-    sphere.position.set(
-      Math.cos(angle) * radius,
-      height,
-      Math.sin(angle) * radius
-    );
-    sphere.userData = { angle, radius, height, speed: 0.2 + Math.random() * 0.4, phase: Math.random() * Math.PI * 2 };
-    scene.add(sphere);
-    particles.push(sphere);
-  }
+  // ③ Purple/violet rim — right side glow
+  const rimLight = new THREE.PointLight(0x8833ff, 60, 20);
+  rimLight.position.set(6, -1, 3);
+  scene.add(rimLight);
 
-  // ── Scroll state ──
-  let scrollY = 0;
-  let targetRotX = 0;
-  let targetRotY = 0;
-  let currentRotX = 0;
-  let currentRotY = 0;
+  // ④ Cyan fill — bottom-left reflection
+  const fillLight = new THREE.PointLight(0x0088ff, 35, 20);
+  fillLight.position.set(-5, -5, 5);
+  scene.add(fillLight);
 
-  window.addEventListener('scroll', () => {
-    scrollY = window.scrollY;
-  });
+  // ⑤ Deep blue back — environment fill
+  const backLight = new THREE.PointLight(0x0011aa, 25, 30);
+  backLight.position.set(2, 0, -8);
+  scene.add(backLight);
 
-  // ── Mouse parallax ──
-  let mouseX = 0, mouseY = 0;
-  window.addEventListener('mousemove', (e) => {
-    mouseX = (e.clientX / window.innerWidth  - 0.5) * 0.6;
-    mouseY = (e.clientY / window.innerHeight - 0.5) * 0.6;
+  // ⑥ Warm white top glint
+  const topGlint = new THREE.PointLight(0xaabbff, 40, 15);
+  topGlint.position.set(-1, 8, 4);
+  scene.add(topGlint);
+
+  /* ── Environment cube (fake IBL — 6 colored point lights) ── */
+  const envColors = [
+    [0x1133ff, 15, [-8, 0, 0]],
+    [0x0022cc, 10, [8, 0, 0]],
+    [0x0044ff, 12, [0, 8, 0]],
+    [0x001188, 8,  [0, -8, 0]],
+    [0x2244ff, 14, [0, 0, 8]],
+    [0x000055, 6,  [0, 0, -8]],
+  ];
+  envColors.forEach(([color, intensity, pos]) => {
+    const l = new THREE.PointLight(color, intensity, 40);
+    l.position.set(...pos);
+    scene.add(l);
   });
 
-  // ── Resize ──
+  /* ── State ── */
+  let scrollY = 0, mouseX = 0, mouseY = 0;
+  let rotX = 0, rotY = 0;
+
+  window.addEventListener('scroll', () => { scrollY = window.scrollY; });
+  window.addEventListener('mousemove', e => {
+    mouseX = (e.clientX / window.innerWidth  - 0.5) * 2;
+    mouseY = (e.clientY / window.innerHeight - 0.5) * 2;
+  });
   window.addEventListener('resize', () => {
     renderer.setSize(window.innerWidth, window.innerHeight);
     camera.aspect = window.innerWidth / window.innerHeight;
     camera.updateProjectionMatrix();
   });
 
-  // ── Animation loop ──
   const clock = new THREE.Clock();
 
+  /* ── Animation loop ── */
   function animate() {
     requestAnimationFrame(animate);
     const t = clock.getElapsedTime();
 
-    // Scroll drives rotation
-    targetRotY = scrollY * 0.0018 + mouseX * 0.8;
-    targetRotX = scrollY * 0.0008 + mouseY * 0.5;
+    // Smooth scroll + mouse rotation
+    const targetRotY = scrollY * 0.0025 + mouseX * 0.55;
+    const targetRotX = scrollY * 0.0012 + mouseY * 0.3;
+    rotX += (targetRotX - rotX) * 0.055;
+    rotY += (targetRotY - rotY) * 0.055;
 
-    // Smooth lerp
-    currentRotX += (targetRotX - currentRotX) * 0.06;
-    currentRotY += (targetRotY - currentRotY) * 0.06;
+    mesh.rotation.x = 0.12 + rotX + Math.sin(t * 0.28) * 0.06;
+    mesh.rotation.y = rotY  + Math.sin(t * 0.22) * 0.10;
+    mesh.rotation.z = -Math.PI * 0.22 + Math.sin(t * 0.18) * 0.04;
 
-    // Base idle rotation
-    mesh.rotation.x = currentRotX + Math.sin(t * 0.22) * 0.12;
-    mesh.rotation.y = currentRotY + t * 0.18;
-    mesh.rotation.z = Math.sin(t * 0.15) * 0.05;
-
-    shell.rotation.x = mesh.rotation.x * 0.95 + 0.1;
-    shell.rotation.y = mesh.rotation.y * 0.95;
-    shell.rotation.z = mesh.rotation.z;
-
-    // Animate particles
-    particles.forEach(p => {
-      const ud = p.userData;
-      const a  = ud.angle + t * ud.speed * 0.4;
-      p.position.x = Math.cos(a) * ud.radius;
-      p.position.z = Math.sin(a) * ud.radius;
-      p.position.y = ud.height + Math.sin(t * ud.speed + ud.phase) * 0.3;
-    });
-
-    // Animate lights
-    fillLight.position.x = Math.sin(t * 0.5) * 3;
-    fillLight.position.y = Math.cos(t * 0.3) * 2;
-    backLight.position.x = Math.cos(t * 0.4) * 3;
-
-    // Move model slightly based on scroll
-    mesh.position.y = -scrollY * 0.0008;
-    shell.position.y = mesh.position.y;
+    // Slowly orbit key lights for living chrome reflections
+    keyLight.position.x = -4 + Math.sin(t * 0.35) * 2.5;
+    keyLight.position.y =  6 + Math.cos(t * 0.28) * 2.0;
+    rimLight.position.x =  6 + Math.cos(t * 0.45) * 2.0;
+    rimLight.position.z =  3 + Math.sin(t * 0.38) * 2.5;
+    fillLight.position.x = -5 + Math.sin(t * 0.55) * 2.0;
+    fillLight.position.y = -5 + Math.cos(t * 0.42) * 1.5;
+    topGlint.position.x  = -1 + Math.sin(t * 0.6) * 3.0;
+    topGlint.position.z  =  4 + Math.cos(t * 0.5) * 2.0;
 
     renderer.render(scene, camera);
   }

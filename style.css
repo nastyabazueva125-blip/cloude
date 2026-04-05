@@ -212,7 +212,7 @@ a { text-decoration: none; color: inherit; }
 .hero__eyebrow {
   font-size: 13px;
   font-weight: 500;
-  color: var(--text-secondary);
+  color: rgba(255,255,255,0.55);
   margin-bottom: 12px;
   letter-spacing: 0.02em;
 }
@@ -222,7 +222,7 @@ a { text-decoration: none; color: inherit; }
   font-weight: 900;
   line-height: 0.95;
   letter-spacing: -0.04em;
-  color: var(--black);
+  color: #ffffff;
 }
 
 .hero__cta-row {
@@ -242,7 +242,7 @@ a { text-decoration: none; color: inherit; }
   font-weight: 500;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: var(--text-secondary);
+  color: rgba(255,255,255,0.35);
   writing-mode: vertical-rl;
   z-index: 5;
 }
@@ -832,4 +832,23 @@ a { text-decoration: none; color: inherit; }
 @media (max-width: 480px) {
   .steps { grid-template-columns: 1fr; }
   .cta__stats { gap: 20px; }
+}
+
+/* ─── HERO DARK OVERRIDES (black 3D canvas bg) ─── */
+.hero .btn-pill {
+  border-color: rgba(255,255,255,0.45);
+  color: #ffffff;
+}
+.hero .btn-pill:hover {
+  background: #ffffff;
+  color: var(--black);
+  border-color: #ffffff;
+}
+.hero .btn-circle {
+  border-color: rgba(255,255,255,0.45);
+  color: #ffffff;
+}
+.hero .btn-circle:hover {
+  background: #ffffff;
+  color: var(--black);
 }
