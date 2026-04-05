@@ -11,10 +11,8 @@
 </head>
 <body>
 
-  <!-- 3D CANVAS — fixed, rotates on scroll -->
   <canvas id="three-canvas"></canvas>
 
-  <!-- ══════════ HERO ══════════ -->
   <section class="hero">
     <nav class="nav">
       <div class="nav__logo">STYLÉ</div>
@@ -27,7 +25,6 @@
       <a href="#contact" class="nav__cta">Начать проект <span>↗</span></a>
     </nav>
 
-    <!-- floating mini-cards -->
     <div class="hero__badge hero__badge--tl">
       <span class="badge-dot"></span>
       Ваш личный лендинг
@@ -40,7 +37,6 @@
       <span>довольных клиентов</span>
     </div>
 
-    <!-- giant title bottom-left (like Med+Med) -->
     <div class="hero__title-block">
       <p class="hero__eyebrow">Продающие страницы за&nbsp;5&nbsp;дней</p>
       <h1 class="hero__title">
@@ -56,7 +52,6 @@
     <div class="scroll-hint">Листать ↓</div>
   </section>
 
-  <!-- ══════════ MARQUEE ══════════ -->
   <div class="marquee-wrap">
     <div class="marquee-track">
       <span>Юристы</span><span class="dot-sep">·</span>
@@ -74,61 +69,49 @@
     </div>
   </div>
 
-  <!-- ══════════ PAIN SECTION ══════════ -->
   <section class="pain" id="about">
     <div class="container">
-
       <div class="pain__header">
         <span class="label">Боль</span>
         <h2 class="section-title">Давно хотел<br>красивый сайт.</h2>
       </div>
-
-      <!-- asymmetric bento grid -->
       <div class="bento">
-
         <div class="bento__card bento__card--wide bento__card--dark">
           <div class="bento__label">Проблема #1</div>
           <h3>Агентства — долго и&nbsp;дорого</h3>
           <p>2–3 месяца работы и&nbsp;ценник как iPhone Pro Max. А&nbsp;запускаться нужно было ещё вчера.</p>
           <div class="bento__icon">⏳</div>
         </div>
-
         <div class="bento__card bento__card--sm">
           <div class="bento__label">Проблема #2</div>
           <h3>ИИ-лендинги не продают</h3>
           <p>Без стратегии, аудитории и позиционирования — просто красивая картинка без конверсий.</p>
           <div class="bento__icon">🤖</div>
         </div>
-
         <div class="bento__card bento__card--sm bento__card--accent">
           <div class="bento__stat">5<span>дней</span></div>
           <p>От брифа до&nbsp;готового лендинга под&nbsp;ключ</p>
         </div>
-
         <div class="bento__card bento__card--med">
           <div class="bento__label">Решение</div>
           <h3>AI-скорость +<br>команда экспертов</h3>
           <p>Маркетолог, дизайнер и&nbsp;разработчик — каждый отвечает за&nbsp;своё. Вместе это работает.</p>
         </div>
-
         <div class="bento__card bento__card--tall bento__card--light">
           <div class="bento__label">Результат</div>
           <div class="bento__big-text">×3</div>
           <p>Быстрее, чем обычное агентство. Дешевле. Эффективнее.</p>
         </div>
-
       </div>
     </div>
   </section>
 
-  <!-- ══════════ WHY ══════════ -->
   <section class="why" id="why">
     <div class="container">
       <div class="why__header">
         <span class="label">Почему мы</span>
         <h2 class="section-title">Не просто сайт —<br>система продаж.</h2>
       </div>
-
       <div class="why__grid">
         <div class="why__left">
           <div class="why-item">
@@ -177,14 +160,12 @@
     </div>
   </section>
 
-  <!-- ══════════ PROCESS ══════════ -->
   <section class="process" id="process">
     <div class="container">
       <div class="process__header">
         <span class="label">Процесс</span>
         <h2 class="section-title">Как это<br>работает.</h2>
       </div>
-
       <div class="steps">
         <div class="step-card">
           <div class="step-card__num">01</div>
@@ -214,7 +195,6 @@
     </div>
   </section>
 
-  <!-- ══════════ FOR WHOM ══════════ -->
   <section class="forwhom">
     <div class="container">
       <div class="forwhom__inner">
@@ -257,7 +237,6 @@
     </div>
   </section>
 
-  <!-- ══════════ CTA ══════════ -->
   <section class="cta" id="contact">
     <div class="container">
       <div class="cta__inner">
@@ -288,7 +267,6 @@
     </div>
   </section>
 
-  <!-- ══════════ FOOTER ══════════ -->
   <footer class="footer">
     <div class="container">
       <div class="footer__inner">
@@ -306,7 +284,6 @@
 
   <div id="toast" class="toast">✓ Заявка отправлена! Свяжемся в течение 2 часов.</div>
 
-  <!-- THREE.JS -->
   <script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script>
   <script src="three-scene.js"></script>
   <script>
@@ -317,8 +294,6 @@
       setTimeout(() => t.classList.remove('toast--show'), 4000);
       e.target.reset();
     }
-
-    // Scroll-based reveal
     const io = new IntersectionObserver(entries => {
       entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('revealed'); });
     }, { threshold: 0.12 });
