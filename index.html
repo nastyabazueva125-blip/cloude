@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>STYLÉ — Лендинги для экспертов</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,300;0,400;0,500;0,700;0,900;1,300&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- 3D CANVAS — fixed, rotates on scroll -->
+  <canvas id="three-canvas"></canvas>
+
+  <!-- ══════════ HERO ══════════ -->
+  <section class="hero">
+    <nav class="nav">
+      <div class="nav__logo">STYLÉ</div>
+      <div class="nav__links">
+        <a href="#about">О нас</a>
+        <a href="#process">Процесс</a>
+        <a href="#cases">Кейсы</a>
+        <a href="#contact">Контакты</a>
+      </div>
+      <a href="#contact" class="nav__cta">Начать проект <span>↗</span></a>
+    </nav>
+
+    <!-- floating mini-cards -->
+    <div class="hero__badge hero__badge--tl">
+      <span class="badge-dot"></span>
+      Ваш личный лендинг
+    </div>
+    <div class="hero__badge hero__badge--tr">
+      🎁 Бесплатный аудит
+    </div>
+    <div class="hero__badge hero__badge--br">
+      <strong>47+</strong>
+      <span>довольных клиентов</span>
+    </div>
+
+    <!-- giant title bottom-left (like Med+Med) -->
+    <div class="hero__title-block">
+      <p class="hero__eyebrow">Продающие страницы за&nbsp;5&nbsp;дней</p>
+      <h1 class="hero__title">
+        Стильные<br>лендинги для<br>экспертов
+      </h1>
+    </div>
+
+    <div class="hero__cta-row">
+      <a href="#contact" class="btn-pill">Запустить за 5 дней</a>
+      <a href="#cases" class="btn-circle">↗</a>
+    </div>
+
+    <div class="scroll-hint">Листать ↓</div>
+  </section>
+
+  <!-- ══════════ MARQUEE ══════════ -->
+  <div class="marquee-wrap">
+    <div class="marquee-track">
+      <span>Юристы</span><span class="dot-sep">·</span>
+      <span>Коучи</span><span class="dot-sep">·</span>
+      <span>Консультанты</span><span class="dot-sep">·</span>
+      <span>Малый бизнес</span><span class="dot-sep">·</span>
+      <span>Эксперты</span><span class="dot-sep">·</span>
+      <span>Предприниматели</span><span class="dot-sep">·</span>
+      <span>Юристы</span><span class="dot-sep">·</span>
+      <span>Коучи</span><span class="dot-sep">·</span>
+      <span>Консультанты</span><span class="dot-sep">·</span>
+      <span>Малый бизнес</span><span class="dot-sep">·</span>
+      <span>Эксперты</span><span class="dot-sep">·</span>
+      <span>Предприниматели</span><span class="dot-sep">·</span>
+    </div>
+  </div>
+
+  <!-- ══════════ PAIN SECTION ══════════ -->
+  <section class="pain" id="about">
+    <div class="container">
+
+      <div class="pain__header">
+        <span class="label">Боль</span>
+        <h2 class="section-title">Давно хотел<br>красивый сайт.</h2>
+      </div>
+
+      <!-- asymmetric bento grid -->
+      <div class="bento">
+
+        <div class="bento__card bento__card--wide bento__card--dark">
+          <div class="bento__label">Проблема #1</div>
+          <h3>Агентства — долго и&nbsp;дорого</h3>
+          <p>2–3 месяца работы и&nbsp;ценник как iPhone Pro Max. А&nbsp;запускаться нужно было ещё вчера.</p>
+          <div class="bento__icon">⏳</div>
+        </div>
+
+        <div class="bento__card bento__card--sm">
+          <div class="bento__label">Проблема #2</div>
+          <h3>ИИ-лендинги не продают</h3>
+          <p>Без стратегии, аудитории и позиционирования — просто красивая картинка без конверсий.</p>
+          <div class="bento__icon">🤖</div>
+        </div>
+
+        <div class="bento__card bento__card--sm bento__card--accent">
+          <div class="bento__stat">5<span>дней</span></div>
+          <p>От брифа до&nbsp;готового лендинга под&nbsp;ключ</p>
+        </div>
+
+        <div class="bento__card bento__card--med">
+          <div class="bento__label">Решение</div>
+          <h3>AI-скорость +<br>команда экспертов</h3>
+          <p>Маркетолог, дизайнер и&nbsp;разработчик — каждый отвечает за&nbsp;своё. Вместе это работает.</p>
+        </div>
+
+        <div class="bento__card bento__card--tall bento__card--light">
+          <div class="bento__label">Результат</div>
+          <div class="bento__big-text">×3</div>
+          <p>Быстрее, чем обычное агентство. Дешевле. Эффективнее.</p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════ WHY ══════════ -->
+  <section class="why" id="why">
+    <div class="container">
+      <div class="why__header">
+        <span class="label">Почему мы</span>
+        <h2 class="section-title">Не просто сайт —<br>система продаж.</h2>
+      </div>
+
+      <div class="why__grid">
+        <div class="why__left">
+          <div class="why-item">
+            <div class="why-item__num">01</div>
+            <div class="why-item__text">
+              <h4>Маркетолог в команде</h4>
+              <p>Анализируем аудиторию, конкурентов и позиционирование. Структура лендинга — не случайна.</p>
+            </div>
+          </div>
+          <div class="why-item">
+            <div class="why-item__num">02</div>
+            <div class="why-item__text">
+              <h4>Дизайнер с насмотренностью</h4>
+              <p>Никаких шаблонов. Только стиль, который передаёт экспертность и вызывает доверие.</p>
+            </div>
+          </div>
+          <div class="why-item">
+            <div class="why-item__num">03</div>
+            <div class="why-item__text">
+              <h4>Разработчик = скорость</h4>
+              <p>Чистый код, быстрая загрузка, адаптив. Подключаем форму, аналитику, CRM.</p>
+            </div>
+          </div>
+          <div class="why-item">
+            <div class="why-item__num">04</div>
+            <div class="why-item__text">
+              <h4>AI ускоряет, люди решают</h4>
+              <p>Используем нейросети для скорости. Но каждое решение принимает команда.</p>
+            </div>
+          </div>
+        </div>
+        <div class="why__right">
+          <div class="why__visual-card">
+            <div class="why__tag">AI + Human</div>
+            <div class="why__big">47+<br><span>лендингов</span></div>
+            <div class="why__sub">Запущено<br>для экспертов</div>
+            <div class="why__avatars">
+              <div class="ava ava--1">М</div>
+              <div class="ava ava--2">Д</div>
+              <div class="ava ava--3">Р</div>
+              <span>Команда из 3 специалистов</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════ PROCESS ══════════ -->
+  <section class="process" id="process">
+    <div class="container">
+      <div class="process__header">
+        <span class="label">Процесс</span>
+        <h2 class="section-title">Как это<br>работает.</h2>
+      </div>
+
+      <div class="steps">
+        <div class="step-card">
+          <div class="step-card__num">01</div>
+          <h4>Бриф + Стратегия</h4>
+          <p>Разбираем нишу, аудиторию, откуда приходит трафик. Строим структуру с умом.</p>
+          <div class="step-card__day">День 1</div>
+        </div>
+        <div class="step-card step-card--accent">
+          <div class="step-card__num">02</div>
+          <h4>Дизайн</h4>
+          <p>Макет под твой бренд и позиционирование. Стиль, который выделяет среди конкурентов.</p>
+          <div class="step-card__day">День 2</div>
+        </div>
+        <div class="step-card">
+          <div class="step-card__num">03</div>
+          <h4>Разработка</h4>
+          <p>Верстаем быстрый адаптивный лендинг. Подключаем аналитику, форму, интеграции.</p>
+          <div class="step-card__day">День 3–4</div>
+        </div>
+        <div class="step-card">
+          <div class="step-card__num">04</div>
+          <h4>Тест + Запуск</h4>
+          <p>Проверяем на всех устройствах. Запускаем и передаём тебе полностью готовым.</p>
+          <div class="step-card__day">День 5</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════ FOR WHOM ══════════ -->
+  <section class="forwhom">
+    <div class="container">
+      <div class="forwhom__inner">
+        <div class="forwhom__left">
+          <span class="label">Для кого</span>
+          <h2 class="section-title">Идеально,<br>если ты:</h2>
+          <a href="#contact" class="btn-pill btn-pill--dark">Обсудить проект ↗</a>
+        </div>
+        <div class="forwhom__cards">
+          <div class="fw-card">
+            <span class="fw-emoji">⚖️</span>
+            <div>
+              <h4>Юрист / Нотариус</h4>
+              <p>Хочешь выглядеть дорого и привлекать клиентов онлайн</p>
+            </div>
+          </div>
+          <div class="fw-card fw-card--accent">
+            <span class="fw-emoji">🧠</span>
+            <div>
+              <h4>Консультант / Коуч</h4>
+              <p>Нужна страница, передающая экспертность и закрывающая на заявку</p>
+            </div>
+          </div>
+          <div class="fw-card">
+            <span class="fw-emoji">🏪</span>
+            <div>
+              <h4>Малый бизнес</h4>
+              <p>Не хочешь переплачивать, но хочешь результат как у агентства</p>
+            </div>
+          </div>
+          <div class="fw-card">
+            <span class="fw-emoji">✨</span>
+            <div>
+              <h4>Любой эксперт</h4>
+              <p>Давно хотел красивый сайт, но всё не решался сделать этот шаг</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════ CTA ══════════ -->
+  <section class="cta" id="contact">
+    <div class="container">
+      <div class="cta__inner">
+        <div class="cta__left">
+          <span class="label label--white">Старт</span>
+          <h2 class="cta__title">Запустим за<br>5 дней.</h2>
+          <p class="cta__sub">Оставь заявку — расскажем как это работает и оценим твой проект бесплатно</p>
+          <div class="cta__stats">
+            <div class="cs"><strong>47+</strong><span>лендингов</span></div>
+            <div class="cs"><strong>5</strong><span>дней</span></div>
+            <div class="cs"><strong>×3</strong><span>быстрее</span></div>
+          </div>
+        </div>
+        <div class="cta__right">
+          <div class="form-card">
+            <h3>Получить лендинг</h3>
+            <p>Бесплатный аудит вашей ниши</p>
+            <form onsubmit="handleSubmit(event)">
+              <input type="text" placeholder="Ваше имя" required />
+              <input type="tel" placeholder="Телефон или Telegram" required />
+              <input type="text" placeholder="Ваша ниша (юрист, коуч...)" />
+              <button type="submit" class="btn-pill btn-pill--full">Получить бесплатную консультацию</button>
+            </form>
+            <p class="form-note">Ответим в течение 2 часов в рабочее время</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════ FOOTER ══════════ -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer__inner">
+        <div class="footer__logo">STYLÉ</div>
+        <div class="footer__links">
+          <a href="#about">О нас</a>
+          <a href="#process">Процесс</a>
+          <a href="#cases">Кейсы</a>
+          <a href="#contact">Контакты</a>
+        </div>
+        <div class="footer__copy">© 2025 STYLÉ</div>
+      </div>
+    </div>
+  </footer>
+
+  <div id="toast" class="toast">✓ Заявка отправлена! Свяжемся в течение 2 часов.</div>
+
+  <!-- THREE.JS -->
+  <script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script>
+  <script src="three-scene.js"></script>
+  <script>
+    function handleSubmit(e) {
+      e.preventDefault();
+      const t = document.getElementById('toast');
+      t.classList.add('toast--show');
+      setTimeout(() => t.classList.remove('toast--show'), 4000);
+      e.target.reset();
+    }
+
+    // Scroll-based reveal
+    const io = new IntersectionObserver(entries => {
+      entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('revealed'); });
+    }, { threshold: 0.12 });
+    document.querySelectorAll('.bento__card, .step-card, .fw-card, .why-item').forEach(el => {
+      el.classList.add('will-reveal');
+      io.observe(el);
+    });
+  </script>
+</body>
+</html>
