@@ -2,130 +2,99 @@
 (function () {
   const canvas = document.getElementById('three-canvas');
 
-  /* ── Renderer ── */
   const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: false });
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
-  renderer.toneMappingExposure = 1.8;
-  renderer.outputEncoding = THREE.sRGBEncoding;
+  renderer.toneMappingExposure = 1.4;
 
-  /* ── Scene ── */
   const scene = new THREE.Scene();
   scene.background = new THREE.Color(0x000000);
 
-  /* ── Camera ── */
   const camera = new THREE.PerspectiveCamera(42, window.innerWidth / window.innerHeight, 0.1, 100);
-  camera.position.set(0, 0, 10);
+  camera.position.set(0, 0.5, 9);
 
-  /* ══════════════════════════════════════════════════
-     CURSOR SHAPE — clockwise, tip at top, pointing up
-     Will be rotated -45° so it points upper-left
-  ═══════════════════════════════════════════════════ */
+  /* ── Cursor shape ── */
   const shape = new THREE.Shape();
+  shape.moveTo(0,    4.0);
+  shape.lineTo(3.5, -1.5);
+  shape.lineTo(1.8, -0.5);
+  shape.lineTo(1.8, -4.2);
+  shape.lineTo(0.8, -4.2);
+  shape.lineTo(0.8, -0.5);
+  shape.lineTo(0.0, -1.5);
+  shape.closePath();
 
-  shape.moveTo(0, 4.0);      // TIP — top
-  shape.lineTo(3.5, -1.5);   // right corner of arrowhead
-  shape.lineTo(1.8, -0.5);   // notch right inner
-  shape.lineTo(1.8, -4.2);   // handle bottom-right
-  shape.lineTo(0.8, -4.2);   // handle bottom-left
-  shape.lineTo(0.8, -0.5);   // notch left inner
-  shape.lineTo(0.0, -1.5);   // bottom-left of arrowhead
-  shape.closePath();          // straight left edge back to tip
-
-  const extrudeSettings = {
-    depth: 1.4,
+  const geo = new THREE.ExtrudeGeometry(shape, {
+    depth: 1.5,
     bevelEnabled: true,
-    bevelSegments: 20,
-    bevelSize: 0.28,
-    bevelThickness: 0.28,
-    bevelOffset: 0,
-  };
-
-  const geo = new THREE.ExtrudeGeometry(shape, extrudeSettings);
+    bevelSegments: 24,
+    bevelSize: 0.30,
+    bevelThickness: 0.30,
+  });
   geo.center();
 
-  /* ── Chrome blue iridescent material ── */
-  const mat = new THREE.MeshPhysicalMaterial({
-    color: new THREE.Color(0.06, 0.12, 0.9),  // deep cobalt blue
-    metalness: 1.0,
-    roughness: 0.03,
-    clearcoat: 1.0,
-    clearcoatRoughness: 0.0,
-    iridescence: 1.0,
-    iridescenceIOR: 2.0,
-    iridescenceThicknessRange: [100, 700],
-    reflectivity: 1.0,
-    envMapIntensity: 1.2,
+  /* ── Chrome-blue Phong material (visible without HDR env map) ── */
+  const mat = new THREE.MeshPhongMaterial({
+    color:    new THREE.Color(0.08, 0.18, 0.95),  // rich cobalt blue
+    emissive: new THREE.Color(0.01, 0.04, 0.22),  // dark-blue base glow
+    specular: new THREE.Color(0.8,  0.85, 1.0),   // cool-white specular
+    shininess: 600,
+    flatShading: false,
   });
 
   const mesh = new THREE.Mesh(geo, mat);
-
-  // Tilt like the reference — pointing upper-left, slight perspective tilt
-  mesh.rotation.z = -Math.PI * 0.22;  // 40° CCW so tip points upper-left
-  mesh.rotation.x = 0.12;             // slight tilt toward camera
-  mesh.scale.set(0.62, 0.62, 0.62);   // fit nicely in viewport
-
+  mesh.rotation.z = -Math.PI * 0.22;
+  mesh.rotation.x =  0.14;
+  mesh.scale.set(0.60, 0.60, 0.60);
   scene.add(mesh);
 
-  /* ════════════════════════════════════
-     LIGHTS — craft the chrome blue look
-  ════════════════════════════════════ */
+  /* ═══════════════════════════════
+     LIGHTS  –  craft chrome look
+  ═══════════════════════════════ */
 
-  // Very dim ambient — keeps dark mood
-  scene.add(new THREE.AmbientLight(0x060618, 2));
+  /* ambient — enough to see dark areas */
+  scene.add(new THREE.AmbientLight(0x1a2a80, 4));
 
-  // ① Main top-left blue key light — creates the big bright highlight
-  const keyLight = new THREE.PointLight(0x3355ff, 120, 25);
-  keyLight.position.set(-4, 6, 7);
-  scene.add(keyLight);
+  /* key: bright white from upper-left → big highlight */
+  const key = new THREE.DirectionalLight(0xffffff, 10);
+  key.position.set(-3, 6, 6);
+  scene.add(key);
 
-  // ② White specular streak — thin bright line on edge
-  const specLight = new THREE.DirectionalLight(0xffffff, 6);
-  specLight.position.set(0.5, 3, 6);
-  scene.add(specLight);
+  /* fill: blue from upper-right */
+  const fill = new THREE.DirectionalLight(0x4466ff, 5);
+  fill.position.set(5, 3, 4);
+  scene.add(fill);
 
-  // ③ Purple/violet rim — right side glow
-  const rimLight = new THREE.PointLight(0x8833ff, 60, 20);
-  rimLight.position.set(6, -1, 3);
-  scene.add(rimLight);
+  /* rim: violet from lower-right-back */
+  const rim = new THREE.DirectionalLight(0x9933ff, 4);
+  rim.position.set(4, -4, -3);
+  scene.add(rim);
 
-  // ④ Cyan fill — bottom-left reflection
-  const fillLight = new THREE.PointLight(0x0088ff, 35, 20);
-  fillLight.position.set(-5, -5, 5);
-  scene.add(fillLight);
+  /* front: soft cyan from below */
+  const front = new THREE.DirectionalLight(0x33aaff, 3);
+  front.position.set(-2, -5, 5);
+  scene.add(front);
 
-  // ⑤ Deep blue back — environment fill
-  const backLight = new THREE.PointLight(0x0011aa, 25, 30);
-  backLight.position.set(2, 0, -8);
-  scene.add(backLight);
+  /* moving point lights for live reflections */
+  const pt1 = new THREE.PointLight(0x5577ff, 80, 20);
+  pt1.position.set(-3, 5, 6);
+  scene.add(pt1);
 
-  // ⑥ Warm white top glint
-  const topGlint = new THREE.PointLight(0xaabbff, 40, 15);
-  topGlint.position.set(-1, 8, 4);
-  scene.add(topGlint);
+  const pt2 = new THREE.PointLight(0xffffff, 40, 15);
+  pt2.position.set(2, 2, 7);
+  scene.add(pt2);
 
-  /* ── Environment cube (fake IBL — 6 colored point lights) ── */
-  const envColors = [
-    [0x1133ff, 15, [-8, 0, 0]],
-    [0x0022cc, 10, [8, 0, 0]],
-    [0x0044ff, 12, [0, 8, 0]],
-    [0x001188, 8,  [0, -8, 0]],
-    [0x2244ff, 14, [0, 0, 8]],
-    [0x000055, 6,  [0, 0, -8]],
-  ];
-  envColors.forEach(([color, intensity, pos]) => {
-    const l = new THREE.PointLight(color, intensity, 40);
-    l.position.set(...pos);
-    scene.add(l);
-  });
+  const pt3 = new THREE.PointLight(0x8833ff, 50, 18);
+  pt3.position.set(5, -2, 4);
+  scene.add(pt3);
 
   /* ── State ── */
   let scrollY = 0, mouseX = 0, mouseY = 0;
   let rotX = 0, rotY = 0;
 
-  window.addEventListener('scroll', () => { scrollY = window.scrollY; });
-  window.addEventListener('mousemove', e => {
+  window.addEventListener('scroll',    () => { scrollY = window.scrollY; });
+  window.addEventListener('mousemove', e  => {
     mouseX = (e.clientX / window.innerWidth  - 0.5) * 2;
     mouseY = (e.clientY / window.innerHeight - 0.5) * 2;
   });
@@ -137,30 +106,35 @@
 
   const clock = new THREE.Clock();
 
-  /* ── Animation loop ── */
   function animate() {
     requestAnimationFrame(animate);
     const t = clock.getElapsedTime();
 
-    // Smooth scroll + mouse rotation
-    const targetRotY = scrollY * 0.0025 + mouseX * 0.55;
-    const targetRotX = scrollY * 0.0012 + mouseY * 0.3;
-    rotX += (targetRotX - rotX) * 0.055;
-    rotY += (targetRotY - rotY) * 0.055;
+    const tRY = scrollY * 0.0025 + mouseX * 0.5;
+    const tRX = scrollY * 0.0012 + mouseY * 0.28;
+    rotX += (tRX - rotX) * 0.055;
+    rotY += (tRY - rotY) * 0.055;
 
-    mesh.rotation.x = 0.12 + rotX + Math.sin(t * 0.28) * 0.06;
-    mesh.rotation.y = rotY  + Math.sin(t * 0.22) * 0.10;
-    mesh.rotation.z = -Math.PI * 0.22 + Math.sin(t * 0.18) * 0.04;
+    mesh.rotation.x = 0.14 + rotX + Math.sin(t * 0.27) * 0.06;
+    mesh.rotation.y = rotY       + Math.sin(t * 0.21) * 0.09;
+    mesh.rotation.z = -Math.PI * 0.22 + Math.sin(t * 0.17) * 0.04;
 
-    // Slowly orbit key lights for living chrome reflections
-    keyLight.position.x = -4 + Math.sin(t * 0.35) * 2.5;
-    keyLight.position.y =  6 + Math.cos(t * 0.28) * 2.0;
-    rimLight.position.x =  6 + Math.cos(t * 0.45) * 2.0;
-    rimLight.position.z =  3 + Math.sin(t * 0.38) * 2.5;
-    fillLight.position.x = -5 + Math.sin(t * 0.55) * 2.0;
-    fillLight.position.y = -5 + Math.cos(t * 0.42) * 1.5;
-    topGlint.position.x  = -1 + Math.sin(t * 0.6) * 3.0;
-    topGlint.position.z  =  4 + Math.cos(t * 0.5) * 2.0;
+    /* orbit lights for dynamic chrome shimmer */
+    pt1.position.set(
+      -3 + Math.sin(t * 0.38) * 3,
+       5 + Math.cos(t * 0.30) * 2,
+       6
+    );
+    pt2.position.set(
+       2 + Math.cos(t * 0.44) * 2.5,
+       2 + Math.sin(t * 0.36) * 1.5,
+       7 + Math.sin(t * 0.28) * 1.5
+    );
+    pt3.position.set(
+       5 + Math.cos(t * 0.52) * 2,
+      -2 + Math.sin(t * 0.40) * 2,
+       4 + Math.cos(t * 0.33) * 2
+    );
 
     renderer.render(scene, camera);
   }
