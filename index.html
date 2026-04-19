@@ -239,43 +239,7 @@
       setTimeout(tick, 1000);
     })();
 
-    /* ── Card pile hover + mouse parallax ── */
-    const stage = document.getElementById('heroStage');
-    const pile  = document.getElementById('cardPile');
-    const cards = pile.querySelectorAll('.hc');
-
-    // Store base transforms from data attrs
-    cards.forEach(c => {
-      c.dataset.baseRot = c.dataset.rot;
-      c.dataset.baseTx  = c.dataset.tx;
-      c.dataset.baseTy  = c.dataset.ty;
-    });
-
-    let on = false, mx = 0, my = 0, cx = 0, cy = 0;
-
-    stage.addEventListener('mouseenter', () => { on = true;  pile.classList.add('is-on'); });
-    stage.addEventListener('mouseleave', () => { on = false; pile.classList.remove('is-on'); mx = 0; my = 0; });
-
-    stage.addEventListener('mousemove', e => {
-      const r = stage.getBoundingClientRect();
-      mx = (e.clientX - r.left  - r.width  / 2) / (r.width  / 2);
-      my = (e.clientY - r.top   - r.height / 2) / (r.height / 2);
-    });
-
-    (function loop() {
-      cx += (mx - cx) * 0.08;
-      cy += (my - cy) * 0.08;
-
-      cards.forEach((c, i) => {
-        const d   = (i + 1) * 0.35;
-        const rot = parseFloat(c.dataset.baseRot) + cx * 4 * (i % 2 ? 1 : -1);
-        const tx  = parseFloat(c.dataset.baseTx)  + cx * 30 * d;
-        const ty  = parseFloat(c.dataset.baseTy)  + cy * 20 * d;
-        c.style.transform = `rotate(${rot}deg) translate(${tx}px, ${ty}px)`;
-      });
-
-      requestAnimationFrame(loop);
-    })();
+    /* card pile: temporarily removed */
 
     /* ── Form ── */
     function handleSubmit(e) {
