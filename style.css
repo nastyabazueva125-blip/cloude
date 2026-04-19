@@ -33,33 +33,31 @@ a { text-decoration: none; color: inherit; }
 .top-nav {
   position: fixed; top: 0; left: 0; right: 0; z-index: 100;
   display: flex; align-items: center; justify-content: space-between;
-  padding: 20px 40px;
-  mix-blend-mode: multiply;
+  padding: 22px 32px;
 }
 .top-nav__brand {
-  font-family: 'Inter', sans-serif;
-  font-weight: 900;
-  font-size: 18px;
-  letter-spacing: -0.02em;
+  font-family: 'Space Mono', monospace;
+  font-weight: 700;
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
 }
 .top-nav__links {
-  display: flex; gap: 32px;
+  display: flex; gap: 40px;
   font-family: 'Space Mono', monospace;
-  font-size: 10px;
-  letter-spacing: 0.08em;
+  font-size: 11px;
+  letter-spacing: 0.06em;
 }
-.top-nav__links a { opacity: 0.6; transition: opacity 0.2s; }
+.top-nav__links a { opacity: 0.5; transition: opacity 0.2s; text-transform: uppercase; }
 .top-nav__links a:hover { opacity: 1; }
 .top-nav__cta {
   font-family: 'Space Mono', monospace;
-  font-size: 10px;
-  letter-spacing: 0.08em;
-  padding: 8px 16px;
-  border: 1px solid var(--black);
-  border-radius: 40px;
-  transition: background 0.2s, color 0.2s;
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  transition: opacity 0.2s;
 }
-.top-nav__cta:hover { background: var(--black); color: var(--white); }
+.top-nav__cta:hover { opacity: 0.6; }
 
 /* ─── HERO ────────────────────────────────────────── */
 .hero {
@@ -78,7 +76,7 @@ a { text-decoration: none; color: inherit; }
   justify-content: center;
   position: relative;
   cursor: crosshair;
-  padding: 120px 40px 60px;
+  padding: 80px 32px 40px;
 }
 
 /* ── Giant headline ── */
@@ -88,23 +86,24 @@ a { text-decoration: none; color: inherit; }
   position: relative;
   z-index: 2;
   pointer-events: none;
+  width: 100%;
 }
 
 .hero__line {
   display: block;
   font-family: 'Inter', sans-serif;
   font-weight: 900;
-  font-size: clamp(56px, 11vw, 160px);
-  line-height: 0.88;
+  font-size: clamp(72px, 16vw, 240px);
+  line-height: 0.87;
   text-transform: uppercase;
-  letter-spacing: -0.03em;
+  letter-spacing: -0.04em;
   color: var(--black);
 }
 
 .hero__line--lg {
-  font-size: clamp(32px, 6.5vw, 96px);
-  opacity: 0.45;
-  margin-top: 0.08em;
+  font-size: clamp(44px, 9.5vw, 144px);
+  opacity: 0.35;
+  letter-spacing: -0.04em;
 }
 
 /* ── Card pile ── */
